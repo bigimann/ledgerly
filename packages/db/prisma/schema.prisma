@@ -1,0 +1,135 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// USER MODEL
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String   // Hashed with bcrypt
+  firstName String
+  lastName  String
+  
+  // Optional profile
+  phone     String?
+  
+  // Timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  // Relations
+  transactions  Transaction[]
+  refreshTokens RefreshToken[]
+  
+  @@map("users")
+}
+
+// REFRESH TOKEN MODEL (JWT)
+
+model RefreshToken {
+  id        String   @id @default(cuid())
+  token     String   @unique
+  userId    String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@index([userId])
+  @@index([token])
+  @@map("refresh_tokens")
+}
+
+// TRANSACTION MODEL (Income + Expenses)
+
+model Transaction {
+  id          String          @id @default(cuid())
+  userId      String
+  
+  // Core fields
+  amount      Decimal         @db.Decimal(15, 2) // Supports up to ₦9,999,999,999,999.99
+  date        DateTime        @db.Date
+  type        TransactionType // INCOME or EXPENSE
+  category    String          // Maps to enums in shared package
+  
+  // Optional fields
+  description String?         @db.Text
+  isRecurring Boolean         @default(false)
+  
+  // Tax-specific (Nigeria)
+  isTaxExempt Boolean         @default(false) // User-declared tax-exempt income
+  
+  // Timestamps
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+  
+  // Soft delete (optional - for data retention)
+  deletedAt   DateTime?
+  
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@index([userId])
+  @@index([userId, date])
+  @@index([userId, type])
+  @@index([date])
+  @@map("transactions")
+}
+
+// ENUMS
+
+enum TransactionType {
+  INCOME
+  EXPENSE
+}
+
+
+
+
+
+// NOTES ON DESIGN DECISIONS
+
+// 1. Money Handling
+//    - Using Decimal(15,2) for precision
+//    - Never use Float for money
+//    - Max: ₦9.9 trillion (more than enough)
+
+// 2. Indexing Strategy
+//    - userId: fast user queries
+//    - userId + date: calendar queries
+//    - userId + type: income/expense filtering
+//    - date: reports across users (analytics later)
+
+// 3. Categories as String (not enum)
+//    - Allows flexibility
+//    - Enums defined in packages/shared
+//    - Validated at application layer
+
+// 4. Soft Deletes
+//    - deletedAt allows data recovery
+//    - Users can "undo" accidental deletes
+//    - Required for financial apps
+
+// 5. No separate Income/Expense tables
+//    - Single table simplifies queries
+//    - Type field discriminates
+//    - Better for calendar views
+//    - Easier reporting
+
+// 6. isTaxExempt field
+//    - User declares tax-exempt income
+//    - Gifts, inheritance, etc.
+//    - Tax engine respects this flag
+
+// 7. Refresh Tokens
+//    - Separate table for security
+//    - Can revoke individual tokens
+//    - Supports multiple devices
+//    - Auto-cleanup via expir

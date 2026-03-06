@@ -1,0 +1,30 @@
+{
+  "name": "@ledgerly/tax-engine",
+  "version": "1.0.0",
+  "description": "Nigeria Personal Income Tax Engine (Ledgerly)",
+  "main": "./src/index.js",
+  "types": "./src/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "clean": "rimraf dist"
+  },
+  "keywords": [
+    "nigeria",
+    "tax",
+    "paye",
+    "pit",
+    "finance",
+    "tax-calculator"
+  ],
+  "author": "Eneojo God'swill Ochimana",
+  "license": "MIT",
+  "dependencies": {
+    "@ledgerly/shared": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3"
+  }
+}
