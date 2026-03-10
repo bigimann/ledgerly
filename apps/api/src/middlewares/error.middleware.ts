@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { ZodError } from "zod";
-import { Prisma } from "@ledgerly/db";
+import { Prisma } from "@prisma/client";
 import { HTTP_STATUS } from "../config/constants";
 
 // Custom error class
@@ -8,7 +8,7 @@ export class AppError extends Error {
   constructor(
     public statusCode: number,
     public message: string,
-    public isOperational = true
+    public isOperational = true,
   ) {
     super(message);
     Object.setPrototypeOf(this, AppError.prototype);
@@ -17,10 +17,10 @@ export class AppError extends Error {
 
 // Error handler middleware
 export const errorHandler = (
-  err: Error,
+  err: any,
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   console.error("Error:", err);
 
@@ -40,6 +40,7 @@ export const errorHandler = (
   // Prisma errors
   if (err instanceof Prisma.PrismaClientKnownRequestError) {
     // Unique constraint violation
+    console.log(err.code);
     if (err.code === "P2002") {
       return res.status(HTTP_STATUS.CONFLICT).json({
         success: false,
