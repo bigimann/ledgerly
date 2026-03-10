@@ -12,6 +12,9 @@
     "db:migrate": "pnpm --filter db migrate",
     "db:studio": "pnpm --filter db studio"
   },
+  "prisma": {
+    "schema": "prisma/schema.prisma"
+  },
   "devDependencies": {
     "typescript": "^5.9.3"
   },
