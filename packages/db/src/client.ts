@@ -33,7 +33,7 @@ export const healthCheck = async (): Promise<boolean> => {
   try {
     await prisma.$queryRaw`SELECT 1`;
     return true;
-  } catch (error) {
+  } catch (error: any) {
     console.error("Database health check failed:", error);
     return false;
   }

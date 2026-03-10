@@ -199,7 +199,7 @@ export class TransactionService {
       },
     });
 
-    return transactions.map((t) => ({
+    return transactions.map((t: any) => ({
       ...t,
       amount: Number(t.amount),
     })) as Transaction[];

@@ -33,7 +33,7 @@ export class ReportService {
     let totalIncome = 0;
     let totalExpense = 0;
 
-    transactions.forEach((transaction) => {
+    transactions.forEach((transaction: any) => {
       const amount = Number(transaction.amount);
 
       if (transaction.type === TransactionType.INCOME) {
@@ -91,7 +91,7 @@ export class ReportService {
     let totalExpense = 0;
     let taxExemptIncome = 0;
 
-    transactions.forEach((transaction) => {
+    transactions.forEach((transaction: any) => {
       const amount = Number(transaction.amount);
       const monthKey = transaction.date.toISOString().substring(0, 7); // YYYY-MM
 
@@ -184,7 +184,7 @@ export class ReportService {
     let totalIncome = 0;
     let taxExemptIncome = 0;
 
-    transactions.forEach((transaction) => {
+    transactions.forEach((transaction: any) => {
       const amount = Number(transaction.amount);
       totalIncome += amount;
 
@@ -245,7 +245,7 @@ export class ReportService {
     let totalExpense = 0;
     let taxExemptIncome = 0;
 
-    transactions.forEach((transaction) => {
+    transactions.forEach((transaction: any) => {
       const amount = Number(transaction.amount);
 
       if (transaction.type === TransactionType.INCOME) {
