@@ -10,6 +10,9 @@
     "studio": "prisma studio",
     "build": "tsc"
   },
+  "prisma": {
+    "schema": "prisma/schema.prisma"
+  },
   "dependencies": {
     "@prisma/client": "5.22.0"
   },
