@@ -30,6 +30,10 @@ export default function TransactionsPage() {
   const [filter, setFilter] = useState<"all" | "INCOME" | "EXPENSE">("all");
   const [showModal, setShowModal] = useState(false);
 
+  //delete
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+  const [selectedId, setSelectedId] = useState<string | null>(null);
+
   useEffect(() => {
     loadTransactions();
   }, [filter]);
@@ -47,17 +51,27 @@ export default function TransactionsPage() {
     }
   };
 
-  const deleteTransaction = async (id: string) => {
-    if (!confirm("Are you sure you want to delete this transaction?")) {
-      return;
-    }
+  const openDeletePopup = (id: string) => {
+    setSelectedId(id);
+    setIsConfirmOpen(true);
+  };
+
+  const closePopup = () => {
+    setIsConfirmOpen(false);
+    setSelectedId(null);
+  };
+
+  const confirmDelete = async () => {
+    if (!selectedId) return;
 
     try {
-      await transactionsApi.delete(id);
+      await transactionsApi.delete(selectedId);
       loadTransactions();
     } catch (error) {
       console.error("Error deleting transaction:", error);
       alert("Failed to delete transaction");
+    } finally {
+      closePopup();
     }
   };
 
@@ -90,10 +104,12 @@ export default function TransactionsPage() {
     <div className="space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold text-gray-900">Transactions</h1>
+        <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900">
+          Transactions
+        </h1>
         <button
           onClick={() => setShowModal(true)}
-          className="flex items-center space-x-2 px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
+          className="flex items-center space-x-2 px-3 py-2 lg:px-4 lg:py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium text-nowrap"
         >
           <Plus className="w-5 h-5" />
           <span>Add New</span>
@@ -143,10 +159,10 @@ export default function TransactionsPage() {
             <p className="text-gray-500 mb-4">No transactions found</p>
             <button
               onClick={() => setShowModal(true)}
-              className="flex items-center space-x-2 mx-auto px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+              className="flex items-center space-x-2 mx-auto px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-nowrap"
             >
               <Plus className="w-5 h-5" />
-              <span>Add your first transaction</span>
+              <span>Add Transaction</span>
             </button>
           </div>
         ) : (
@@ -189,10 +205,10 @@ export default function TransactionsPage() {
                                     {transaction.description}
                                   </div>
                                 )}
-                                <div className="text-xs text-gray-400 mt-1">
+                                <div className="text-xs text-gray-400 mt-1 flex flex-wrap items-baseline gap-2">
                                   {formatDate(transaction.date)}
                                   {transaction.isTaxExempt && (
-                                    <span className="ml-2 px-2 py-0.5 bg-yellow-100 text-yellow-800 text-xs rounded">
+                                    <span className="ml-2 px-2 py-0.5 bg-yellow-100 text-yellow-800 text-xs rounded text-nowrap">
                                       Tax Exempt
                                     </span>
                                   )}
@@ -202,7 +218,7 @@ export default function TransactionsPage() {
                           </div>
                           <div className="flex items-center space-x-4">
                             <div
-                              className={`text-lg font-semibold ${
+                              className={`text-xs md:text-2xl lg:text-2xl font-semibold text-nowrap ${
                                 transaction.type === "INCOME"
                                   ? "text-green-600"
                                   : "text-red-600"
@@ -212,12 +228,44 @@ export default function TransactionsPage() {
                               {formatCurrency(transaction.amount)}
                             </div>
                             <button
-                              onClick={() => deleteTransaction(transaction.id)}
+                              onClick={() => openDeletePopup(transaction.id)}
                               className="text-gray-400 hover:text-red-600 transition-colors p-1"
                               title="Delete transaction"
                             >
                               <Trash2 className="w-5 h-5" />
                             </button>
+
+                            {/* Confirmation Modal */}
+                            {isConfirmOpen && (
+                              <div className="fixed inset-0 flex items-center justify-center bg-black/40 z-50">
+                                <div className="bg-white rounded-lg shadow-lg w-80 md:w-100 lg:w-100 p-6">
+                                  <h2 className="text-lg font-semibold mb-3 text-black">
+                                    Delete Transaction?
+                                  </h2>
+
+                                  <p className="text-gray-600 mb-6">
+                                    Are you sure you want to delete this
+                                    transaction? This action cannot be undone.
+                                  </p>
+
+                                  <div className="flex justify-end gap-3">
+                                    <button
+                                      onClick={closePopup}
+                                      className="px-4 py-2 rounded border text-black border-gray-300 hover:bg-gray-100"
+                                    >
+                                      Cancel
+                                    </button>
+
+                                    <button
+                                      onClick={confirmDelete}
+                                      className="px-4 py-2 rounded bg-red-600 text-white hover:bg-red-700"
+                                    >
+                                      Delete
+                                    </button>
+                                  </div>
+                                </div>
+                              </div>
+                            )}
                           </div>
                         </div>
                       </div>

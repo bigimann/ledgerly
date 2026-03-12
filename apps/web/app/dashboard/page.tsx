@@ -263,7 +263,7 @@ export default function DashboardPage() {
 
       {/* Day Details Modal */}
       {selectedDayData && selectedDay && (
-        <div className="fixed inset-0 bg-slate-300 bg-opacity-50 flex items-center justify-center z-50 p-4">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[80vh] overflow-y-auto">
             <div className="flex items-center justify-between p-6 border-b">
               <h2 className="text-xl font-bold text-gray-900">
@@ -285,7 +285,7 @@ export default function DashboardPage() {
                   <div className="text-sm text-green-600 font-medium">
                     Income
                   </div>
-                  <div className="text-xl font-bold text-green-700 mt-1">
+                  <div className="text-sm md:text-xl lg:text-xl font-bold text-green-700 mt-1">
                     {formatCurrency(selectedDayData.incomeTotal)}
                   </div>
                 </div>
@@ -293,7 +293,7 @@ export default function DashboardPage() {
                   <div className="text-sm text-red-600 font-medium">
                     Expenses
                   </div>
-                  <div className="text-xl font-bold text-red-700 mt-1">
+                  <div className="text-sm md:text-xl lg:text-xl font-bold text-red-700 mt-1">
                     {formatCurrency(selectedDayData.expenseTotal)}
                   </div>
                 </div>
@@ -335,7 +335,7 @@ export default function DashboardPage() {
                       )}
                     </div>
                     <div
-                      className={`font-semibold text-lg ${
+                      className={`font-semibold text-sm md:text-xl lg:text-xl text-nowrap ${
                         transaction.type === "INCOME"
                           ? "text-green-600"
                           : "text-red-600"

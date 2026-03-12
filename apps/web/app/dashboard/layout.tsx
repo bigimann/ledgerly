@@ -96,9 +96,7 @@ export default function DashboardLayout({
               {/* User Menu */}
               <div className="flex items-center space-x-4">
                 <div className="text-sm text-gray-700">
-                  <span className="font-medium">
-                    {user?.firstName} {user?.lastName}
-                  </span>
+                  <span className="font-medium">{user?.firstName}</span>
                 </div>
 
                 {/* Desktop: History & Logout */}
