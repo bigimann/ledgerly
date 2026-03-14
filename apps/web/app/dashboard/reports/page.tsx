@@ -115,14 +115,14 @@ export default function ReportsPage() {
     <div className="space-y-6">
       {/* Header */}
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between gap-4">
         <h1 className="text-3xl font-bold text-gray-900">Reports</h1>
         <div className="flex items-center space-x-4">
           {/* Export Dropdown */}
           <div className="relative">
             <button
               onClick={() => setShowExportMenu(!showExportMenu)}
-              className="flex items-center space-x-2 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+              className="flex items-center space-x-2 px-2 md:px-4 lg:px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
             >
               <Download className="w-5 h-5" />
               <span>Export</span>
@@ -158,7 +158,7 @@ export default function ReportsPage() {
           <select
             value={year}
             onChange={(e) => setYear(parseInt(e.target.value))}
-            className="px-4 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            className="px-2 md:px-4 lg:px-4 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white focus:outline-none focus:ring-blue-500 focus:border-blue-500"
           >
             {[...Array(5)].map((_, i) => {
               const y = new Date().getFullYear() - i;

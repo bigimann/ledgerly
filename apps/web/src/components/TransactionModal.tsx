@@ -13,10 +13,12 @@ interface TransactionModalProps {
 
 const INCOME_CATEGORIES = [
   "Salary",
-  "Freelance/Contract",
-  "Business Income",
-  "Investment Income",
-  "Gift/Inheritance",
+  "Freelance",
+  "Contract",
+  "Business",
+  "Investment",
+  "Gift",
+  "Inheritance",
   "Other Income",
 ];
 
@@ -26,7 +28,7 @@ const EXPENSE_CATEGORIES = [
   "Rent/Housing",
   "Utilities",
   "Personal Care",
-  "Business Expense",
+  "Business",
   "Healthcare",
   "Education",
   "Entertainment",
@@ -129,7 +131,7 @@ export default function TransactionModal({
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+    <div className="fixed inset-0 bg-black/40 bg-opacity-50 flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-lg shadow-xl max-w-md w-full max-h-[90vh] overflow-y-auto">
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b">

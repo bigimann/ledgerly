@@ -58,7 +58,7 @@ export default function DashboardLayout({
       <div className="min-h-screen bg-gray-50">
         {/* Top Navigation */}
         <nav className="bg-white shadow-sm border-b">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-7xl mx-auto md:py-3 lg:py-4 px-4 sm:px-6 lg:px-8">
             <div className="flex justify-between h-16">
               <div className="flex">
                 {/* Logo */}
@@ -96,11 +96,11 @@ export default function DashboardLayout({
               {/* User Menu */}
               <div className="flex items-center space-x-4">
                 <div className="text-sm text-gray-700">
-                  <span className="font-medium">{user?.firstName}</span>
+                  <span className="font-medium">Hi, {user?.lastName}</span>
                 </div>
 
                 {/* Desktop: History & Logout */}
-                <div className="hidden sm:flex items-center space-x-2">
+                <div className="hidden lg:flex items-center space-x-2">
                   <Link
                     href="/dashboard/history"
                     className="flex items-center space-x-2 px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded-md transition-colors"
@@ -110,7 +110,7 @@ export default function DashboardLayout({
                   </Link>
                   <button
                     onClick={logout}
-                    className="flex items-center space-x-2 px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded-md transition-colors"
+                    className="flex items-center space-x-2 px-4 py-2 text-sm font-medium text-red-600 hover:bg-red-50 rounded-md transition-colors"
                   >
                     <LogOut className="w-4 h-4" />
                     <span>Logout</span>
@@ -118,7 +118,7 @@ export default function DashboardLayout({
                 </div>
 
                 {/* Mobile: Hamburger Menu */}
-                <div className="sm:hidden mobile-menu-container">
+                <div className="mobile-menu-container lg:hidden">
                   <button
                     onClick={() => setShowMobileMenu(!showMobileMenu)}
                     className="p-2 text-gray-700 hover:text-gray-900"
