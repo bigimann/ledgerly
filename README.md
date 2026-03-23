@@ -97,7 +97,7 @@ The engine also supports:
 Clone the repository:
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/ledgerly.git
+git clone https://github.com/bigimann/ledgerly.git
 cd ledgerly
 ```
 
